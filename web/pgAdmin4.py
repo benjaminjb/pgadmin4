@@ -42,6 +42,7 @@ from pgadmin.utils.constants import INTERNAL
 # Get the config database schema version. We store this in pgadmin.model
 # as it turns out that putting it in the config files isn't a great idea
 from pgadmin.model import SCHEMA_VERSION
+from pgadmin.utils.session import SessionInterface
 
 
 ##########################################################################
@@ -150,6 +151,9 @@ else:
 
 if not app.PGADMIN_RUNTIME:
     app.wsgi_app = ReverseProxied(app.wsgi_app)
+
+if 'PGADMIN_DEFAULT_DIGEST_METHOD' in os.environ:
+    SessionInterface.default_digest_method = os.environ['PGADMIN_DEFAULT_DIGEST_METHOD']
 
 app.run_before_app_start()
 
